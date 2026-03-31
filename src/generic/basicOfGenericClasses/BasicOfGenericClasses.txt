@@ -1,0 +1,112 @@
+Why generic class?
+
+Let us consider the case of processing of an array of any
+ type of numbers using java program.
+
+1. Initializing the array.
+2. Printing the elements in the array.
+3. Reversing the ordering of the elements in the array.
+
+Here, is the program structure which you should consider, in
+case the array stores integer numbers.
+
+class specificArrayInt{
+    // Declaring an array of integer values
+    // Constructor to load the array.
+    // Method to print the array elements.
+    // Method to reverse the array elements.
+}
+
+class MainClassInt{
+    /* This class utilize the class SpecificArrayInt to
+     manipulate some integer data */
+}
+
+
+# Now consider the case of processing a set of double values stored in an array.
+
+class specificArrayDouble{
+    // Declaring an array of Double values
+    // Constructor to load the array.
+    // Method to print the array elements.
+    // Method to reverse the array elements.
+}
+
+class MainClassInt{
+    /* This class utilize the class SpecificArrayDouble to
+     manipulate some Double data */
+}
+
+
+# Let us repeat the procedure, but a set of string element stored in an array/
+class specificArrayString{
+    // Declaring an array of String values
+    // Constructor to load the array.
+    // Method to print the array elements.
+    // Method to reverse the array elements.
+}
+
+class MainClassString{
+    /* This class utilize the class SpecificArrayString to
+     manipulate some String data */
+}
+
+
+## Observations
+- Data different.
+- Algorithms (i.e., logic) are same for all methods.
+- Different programs.
+- Code duplications
+
+
+## Syntax of defining Generic Class
+
+The syntax for declaring a generic class is as follows:
+
+[<<Access] class <ClassName> <<Type1> [, <Type2>, ..]>>{
+    ...body of the class
+}
+
+Here, is the full syntax for declaring a reference to a generic class and instance creation:
+
+<className><typeList> varName = new <className><typeList> (<InputArray>);
+
+
+## Example: Defining a Generic class with Array of Any Data Type
+
+class GenericArrayClass{
+    // Declaring a generic array
+    // Constructor to load the array.
+    // Method to print the array elements
+    // Method to reverse the array elements
+}
+
+class MainClass{
+    /* This class utilize the class GenericArrayClass to manipulate
+     data of any type.*/
+}
+
+
+### Example: Defining a Generic Class with User Defined Data Type
+
+// Define a class Student
+class Student{
+    String name;
+    float marks;
+
+    Student(String name, float marks){
+        this.name = name;
+        this.marks = marks;
+    }
+}
+
+class GenericClass<T>{  // Use < > to specify class type
+    T obj;              // An object of type T is declared
+    GenericClass(T obj){ // Constructor of the generic class
+        this.obj = obj;
+    }
+
+    public T getObject(){  // A Method in the class
+        return this.obj;
+    }
+}
