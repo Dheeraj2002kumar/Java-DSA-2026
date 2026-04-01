@@ -1,0 +1,47 @@
+Concepts Covered
+
+- Important points
+- Generic Class with Multiple Type Parameters
+    - Syntax of Defining Advanced Generic Class
+    - Examples
+
+## Features in generic programming
+
+- In the previous lectures, we have shared our programming experience,
+    we want to process data using same logic, but are of different
+    type
+- The generic feature in java is a right solution to get rid-off
+code duplicities.
+
+## Important notes
+
+1. you cannot instantiate an array whose  element type is a
+type parameter. That  is following is invalid.
+    T a = new T[5];
+
+The reason is that you can't create an array of T is that there
+is no way for the compiler to know what type of array to actually
+create.
+
+2. A generic method or any method in a generic class can
+be declared as static.
+
+package generic.parameterizedGenericClass;
+
+public class GenericStatic <T> {
+    // Defining a static generic method to print any data type
+    static <T> void gPrint(T t){
+        System.out.println(t);
+    }
+
+    static void main(String[] args) {
+        gPrint(10); // calling generic method with integer argument
+        gPrint("Joy with Java"); // String argument
+        gPrint(3.1412); // double argument
+    }
+}
+
+
+3. A generic method or any method in a generic class can be
+declared as static.
+
