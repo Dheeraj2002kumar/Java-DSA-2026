@@ -1,0 +1,318 @@
+# Concepts Covered
+
+- Bounded types in generic class definition
+- Wildcard in java generics
+- Bounded wildcard arguments
+- Examples
+- Guidelnes for wildcard
+
+## Bounded types in generic class definition
+
+Let us revisit the following program.
+
+GenericError<T> {
+    T[] array;
+
+    GenericError(T[] t){
+        array = t;
+    }
+
+    double average(){
+        double sum = 0.0;
+        for(int i = 0; i < array.length; i++){
+            sum += array[i].doubleValue();
+        }
+        return sum / array.length;
+    }
+}
+
+- The program reports compile-time error showing that the doubleValue() method is
+    unknown.
+- It works for any sub class of the class Number, but not for any other type,
+for example, String, Student, etc.
+- There is a need to tell the bound of an argument in generic class definition.
+
+To handle such situations, java provides bounded types.
+
+## Syntax: Upper bound of an argument
+
+- When specifying a type parameter, you can create an upper bound that declares the
+super class for which all type arguments must be derived.
+- This is accomplished through the use of an extends clause when specifying the type parameter
+
+    <T extends Superclass>
+- This specifies that T can only be replaced by super class, or sub classes of super class.
+Thus, super class defines an inclusive, upper limit.
+
+package generic.boundedArgumentGenericClass;
+
+import generic.parameterizedGenericClass.GenericClass;
+
+class GenericBound<T extends Number> {
+    T[] array;
+
+    GenericBound(T[] t){
+        array = t;
+    }
+
+    double average(){
+        double sum = 0.0;
+        for(int i = 0; i < array.length; i++){
+            sum += array[i].doubleValue();
+        }
+        return sum / array.length;
+    }
+}
+public class GenericBoundDemo {
+    static void main(String[] args) {
+        Integer[] intArray = {1, 2, 3, 4, 5};
+        GenericBound<Integer> intData = new GenericBound<>(intArray);
+
+        double avgInt = intData.average();
+        System.out.println("Average is " + avgInt);
+
+        Double[] doubleArray = {1.2, 3.4, 5.5, 44.4};
+        GenericBound<Double> doubleData = new GenericBound<>(doubleArray);
+
+        double avgDouble = doubleData.average();
+        System.out.println("Average is " + avgDouble);
+
+        // Not allowd (will give comile-time error)
+//        String[] strArray = {"1", "2", "3", "5"};
+//        GenericBound<String> strData = new GenericBound<String>(strArray);
+
+        /*
+        double avgStr = strData.average();  // ERROR!
+        System.out.println("Average is " + avgStr);
+         */
+    }
+}
+
+
+## Wildcard in java Generics
+
+### Wildcard in generic programming
+
+- The question mark symbol (?) is known as the wildcard in generic programming in java.
+- Whenever you need to represent an unknown type, you can do that with ?.
+- Java generic's wildcard is a mechanism to cast a collection of a certain class.
+
+Example 5.3: Generic class with another limitation
+
+The following class definition is to make a program so that a student's marks can be stored in
+any number format, that is, Integer, Short, Double, float, Long etc.
+
+package generic.boundedArgumentGenericClass;
+
+class Student<T extends Number>{
+    String name;
+    T[] marks;
+
+    Student(T[] m){
+        marks = m;
+    }
+
+    // This method to calculate the total of marks obtained by a student
+    double total(){
+        double sum = 0.0;
+        for(int i = 0; i < marks.length; i++){
+            sum += marks[i].doubleValue();
+        }
+        return (sum);
+    }
+
+    // This method compares the marks objtained by this
+    // student with another student
+    boolean comparemarks(Student<T> others){
+        if (total() == others.total()){
+            return true;
+        }
+        return false;
+    }
+    // end of the generic class definition
+}
+
+// Driver class while instantiating the student class with different number format.
+public class GenericLimitationDemo {
+    static void main(String[] args) {
+        Integer[] intMarks = { 44, 55, 33, 66, 77};
+        Student<Integer> s1IntMarks = new Student<>(intMarks);
+        System.out.println("Total marks " + s1IntMarks.total());
+
+        Integer[] intMarks2 = { 49, 39, 53, 54, 89};
+        Student<Integer> s2IntMarks = new Student<>(intMarks2);
+        System.out.println("Total marks " + s2IntMarks.total());
+
+        // compare marks between s1 and s2
+        if (s1IntMarks.comparemarks(s2IntMarks)){
+            System.out.println("Same marks");
+        } else{
+            System.out.println("Different marks.");
+        }
+
+        Double[] doubleMarks = { 41.5, 43.5, 66.4, 55.4, 56.7};
+        Student<Double> s3DoubleMarks = new Student<>(doubleMarks);
+        System.out.println("Total marks " + s3DoubleMarks.total());
+
+        Float[] floatMarks = { 45.3f, 49.5f, 96.4f, 35.4f, 96.7f};
+        Student<Float> s4FloatMarks = new Student<>(floatMarks);
+        System.out.println("Total marks " + s4FloatMarks.total());
+
+//        // Compare marks between s2 and s3
+//        if (s2IntMarks.comparemarks(s3DoubleMarks)){  // ERROR!
+//            System.out.println("Same marks");
+//        } else{
+//            System.out.println("Different marks.");
+//        }
+//
+//        // compare marks between s3 and s4
+//        if (s3DoubleMarks.comparemarks(s4FloatMarks)){  // ERROR!
+//            System.out.println("Same marks.");
+//        } else{
+//            System.out.println("Different marks.");
+//        }
+
+    }
+
+}
+
+
+### Wildcard argument in java
+
+- Such a problem can be solved by using another feature of java generics called the wildcard argument
+- the wildcard argument is specified by the ?. and it just work as the type casting.
+- Thus, with reference to program in Example 5.3, we have to change the
+ boolean compareMarks (Student <T> t) method with wildcard as boolean compareMarks(Student<?> t).
+
+package generic.boundedArgumentGenericClass;
+
+class Student1<T extends Number>{
+    String name;
+    T[] marks;
+
+    Student1(T[] m){
+        marks = m;
+    }
+
+    // This method to calculate the total of marks obtained by a Student1
+    double total(){
+        double sum = 0.0;
+        for(int i = 0; i < marks.length; i++){
+            sum += marks[i].doubleValue();
+        }
+        return (sum);
+    }
+
+    // This method compares the marks objtained by this
+    // Student1 with another Student1
+    boolean comparemarks(Student1<?> others){
+        if (total() == others.total()){
+            return true;
+        }
+        return false;
+    }
+    // end of the generic class definition
+}
+
+
+public class GenericLimitationWildcard {
+    static void main(String[] args) {
+        Integer[] intMarks = { 44, 55, 33, 66, 77};
+        Student1<Integer> s1IntMarks = new Student1<>(intMarks);
+        System.out.println("Total marks " + s1IntMarks.total());
+
+        Integer[] intMarks2 = { 49, 39, 53, 54, 89};
+        Student1<Integer> s2IntMarks = new Student1<>(intMarks2);
+        System.out.println("Total marks " + s2IntMarks.total());
+
+        // compare marks between s1 and s2
+        if (s1IntMarks.comparemarks(s2IntMarks)){
+            System.out.println("Same marks");
+        } else{
+            System.out.println("Different marks.");
+        }
+
+        Double[] doubleMarks = { 41.5, 43.5, 66.4, 55.4, 56.7};
+        Student1<Double> s3DoubleMarks = new Student1<>(doubleMarks);
+        System.out.println("Total marks " + s3DoubleMarks.total());
+
+        Float[] floatMarks = { 45.3f, 49.5f, 96.4f, 35.4f, 96.7f};
+        Student1<Float> s4FloatMarks = new Student1<>(floatMarks);
+        System.out.println("Total marks " + s4FloatMarks.total());
+
+        // Compare marks between s2 and s3
+        if (s2IntMarks.comparemarks(s3DoubleMarks)){  // ERROR!
+            System.out.println("Same marks");
+        } else{
+            System.out.println("Different marks.");
+        }
+
+        // compare marks between s3 and s4
+        if (s3DoubleMarks.comparemarks(s4FloatMarks)){  // ERROR!
+            System.out.println("Same marks.");
+        } else{
+            System.out.println("Different marks.");
+        }
+
+    }
+
+}
+
+
+## Bounded Wildcard Arguments
+
+Object
+    Animal
+    - long lifespan;
+    - float weight;
+    - print()
+
+        A) Aquatic
+        - Boolean scale;
+        - print();
+
+        B) Land
+        - short vision;
+
+           1) Pet
+            - String name;
+
+            2) Wild
+            - float speed;
+
+There are other three different ways that wildcard features are useful.
+1. Upper bound wildcard
+    These wildcards can be used when you want to write a method that works on the
+    class where it is defined or any of its sub class
+
+    Syntax:
+    To declare an upper-bounded wildcard, use the wildcard character ?, followed by
+    the extends keyword, followed by its upper bound class name. For example, say
+    a denotes the upper bound of the class. Then the wildcard uses for the method
+    bounded up to A is
+
+    <type> methodUBA(? extends A) { ... }
+
+    In other words, the call of this method is valid for any object of the class
+    A or any of its child class.
+
+2. Lower bound wildcard
+    If you want to limit the call of a method defined in class A and its parent
+    classes only, then you can use lower bound wildcard.
+
+    Syntax:
+    It is expressed using the wildcard character ?, followed by the super keyword,
+    followed by its class name.
+
+    <typ> methodLBA(? super A) { ... }
+
+3. unbound wildcard
+    These are useful in the following cases:
+    - When writing a method which can be employed using functionality provided in
+    Object class
+    - When the code is using methods in the generic class that don't depend on the
+    type parameter.
+
+    syntax:
+    It is expressed using the wildcard character ?, followed by nothing.
+    <type> methodNBA (?) { ... }
