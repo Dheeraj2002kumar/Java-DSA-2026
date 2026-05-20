@@ -78,22 +78,54 @@ public class BinaryTreeDemo {
         }
     }
 
+    public static int countOfNodes(Node root){
+        if (root == null) return 0;
+
+        int leftNodes = countOfNodes(root.left);
+        int rightNodes = countOfNodes(root.right);
+
+        return leftNodes + rightNodes + 1;
+    }
+
+    public static int sumOfNodes(Node root){
+        if (root == null) return 0;
+
+        int leftSum = sumOfNodes(root.left);
+        int rightSum = sumOfNodes(root.right);
+
+        return leftSum + rightSum + root.data;
+    }
+
+    public static int height(Node root){
+        if (root == null) return 0;
+
+        int leftHeight = height(root.left);
+        int rightHeight = height(root.right);
+
+        int myHeight = Math.max(leftHeight, rightHeight) + 1;
+        return myHeight;
+    }
+
     public static void main(String[] args){
         int[] node = {1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1};
 
         BinaryTree tree = new BinaryTree();
         Node root = tree.buildTree(node);
-        System.out.println(root.data);
-        System.out.println("Preorder: ");
-        preorder(root);
+//        System.out.println(root.data);
+//        System.out.println("Preorder: ");
+//        preorder(root);
+//
+//        System.out.println("\nInorder: ");
+//        inorder(root);
+//
+//        System.out.println("\nPostorder: ");
+//        postorder(root);
+//
+//        System.out.println("\nLevel order: " );
+//        levelOrder(root);
 
-        System.out.println("\nInorder: ");
-        inorder(root);
-
-        System.out.println("\nPostorder: ");
-        postorder(root);
-
-        System.out.println("\nLevel order: " );
-        levelOrder(root);
+        System.out.println("Count of Nodes " + countOfNodes(root));
+        System.out.println("Sum of Nodes " + sumOfNodes(root));
+        System.out.println("Height of Tree " + height(root));
     }
 }
